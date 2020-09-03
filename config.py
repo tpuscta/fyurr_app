@@ -8,3 +8,6 @@ DEBUG = True
 
 # Connect to the database
 SQLALCHEMY_DATABASE_URI = 'postgres://tejaspandey@localhost:5432/fyurrapp'
+
+#Set track modifications to false
+SQLALCHEMY_TRACK_MODIFICATIONS = False
