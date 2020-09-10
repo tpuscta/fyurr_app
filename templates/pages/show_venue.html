@@ -9,13 +9,16 @@
 		<p class="subtitle">
 			ID: {{ venue.id }}
 		</p>
+		<a href="/venues/{{ venue.id }}/edit"><button type="button" data-venue_id={{ venue.id }} class="btn btn-primary" id="editButton">Edit</button></a>
+		<button type="button" data-venue_id={{ venue.id }} class="btn btn-danger" id="deleteButton">Delete</button>
+		<br />
 		<div class="genres">
 			{% for genre in venue.genres %}
-			<span class="genre">{{ genre }}</span>
+			<span class="genre">{{ genre.name }}</span>
 			{% endfor %}
 		</div>
 		<p>
-			<i class="fas fa-globe-americas"></i> {{ venue.city }}, {{ venue.state }}
+			<i class="fas fa-globe-americas"></i> {{ venue.city.name }}, {{ venue.city.state.name }}
 		</p>
 		<p>
 			<i class="fas fa-map-marker"></i> {% if venue.address %}{{ venue.address }}{% else %}No Address{% endif %}
@@ -52,8 +55,8 @@
 		{%for show in venue.upcoming_shows %}
 		<div class="col-sm-4">
 			<div class="tile tile-show">
-				<img src="{{ show.artist_image_link }}" alt="Show Artist Image" />
-				<h5><a href="/artists/{{ show.artist_id }}">{{ show.artist_name }}</a></h5>
+				<img src="{{ show.Artist.image_link }}" alt="Show Artist Image" />
+				<h5><a href="/artists/{{ show.artist_id }}">{{ show.Artist.name }}</a></h5>
 				<h6>{{ show.start_time|datetime('full') }}</h6>
 			</div>
 		</div>
@@ -66,14 +69,35 @@
 		{%for show in venue.past_shows %}
 		<div class="col-sm-4">
 			<div class="tile tile-show">
-				<img src="{{ show.artist_image_link }}" alt="Show Artist Image" />
-				<h5><a href="/artists/{{ show.artist_id }}">{{ show.artist_name }}</a></h5>
+				<img src="{{ show.Artist.image_link }}" alt="Show Artist Image" />
+				<h5><a href="/artists/{{ show.artist_id }}">{{ show.Artist.name }}</a></h5>
 				<h6>{{ show.start_time|datetime('full') }}</h6>
 			</div>
 		</div>
 		{% endfor %}
 	</div>
 </section>
+
+<script>
+
+	deleteButton = document.getElementById("deleteButton")
+
+	deleteButton.onclick = (event) => {
+
+		event.preventDefault();
+
+		console.log(deleteButton.dataset.venue_id)
+
+		fetch('/venues/'+ deleteButton.dataset.venue_id, {
+			method: 'DELETE',
+		}).then((response) => window.location = "/venues")
+
+	};
+
+
+
+
+</script>
 
 {% endblock %}
 
